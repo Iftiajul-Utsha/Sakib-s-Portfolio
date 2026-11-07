@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    /* Phones get the tablet layout: lay the page out at 768px and let the phone scale it to fit. */
+    (function () {
+      var meta = document.querySelector('meta[name="viewport"]');
+      function apply() {
+        var phone = Math.min(screen.width, window.outerWidth || screen.width) < 768;
+        meta.setAttribute("content", phone ? "width=768, viewport-fit=cover"
+                                           : "width=device-width, initial-scale=1, viewport-fit=cover");
+        document.documentElement.classList.toggle("tablet-mode", phone);
+      }
+      apply();
+      window.addEventListener("orientationchange", function () { setTimeout(apply, 150); });
+    })();
+  </script>
+  <meta name="theme-color" content="#1d1a1a" />
+  <meta name="color-scheme" content="dark" />
+  <title>Sakib — Software Developer</title>
+  <meta name="description" content="Sakib is a software developer and mountaineer who takes on hard problems one steady step at a time." />
+  <meta property="og:title" content="Sakib — Software Developer" />
+  <meta property="og:description" content="Summiting mountains of code." />
+  <meta property="og:image" content="assets/portrait_preview.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <a href="#top" class="wordmark" translate="no" aria-label="Sakib, back to top">sakib</a>
+    <nav aria-label="Main">
+      <a href="#about" data-nav="about">About</a>
+      <a href="#experience" data-nav="experience">Experience</a>
+      <a href="#work" data-nav="work">Work</a>
+      <a href="#contact" data-nav="contact">Contact</a>
+    </nav>
+    <!-- EDIT: put your CV at portfolio/Sakib-CV.pdf -->
+    <a class="btn btn-small" href="Sakib-CV.pdf" download>Download CV</a>
+  </header>
+
+  <section id="top" class="hero" aria-labelledby="hero-name">
+    <!-- 2D hero: photo, the name, then the cut-out of you on top (pixel-aligned, no WebGL) -->
+    <div class="hero-art">
+      <img class="hero-photo" src="assets/portrait_edit.webp" width="4096" height="2048" fetchpriority="high"
+           alt="Sakib on a mountain, the ridges behind him traced in red code" />
+      <canvas class="hero-rain" id="hero-rain" aria-hidden="true"></canvas>
+      <span class="hero-word" id="hero-word" aria-hidden="true" translate="no">SAKIB</span>
+      <img class="hero-cut" src="assets/person_layer.webp" width="4096" height="2048" alt="" aria-hidden="true" />
+    </div>
+    <div class="hero-copy">
+      <h1 id="hero-name" class="hero-name" translate="no">Sakib</h1>
+      <p class="lede enter" style="--d: 140ms">Summiting mountains of code.</p>
+      <p class="sub enter" style="--d: 200ms">Software developer and mountaineer. I take on hard problems the way I take on peaks: one steady step at a time, all the way to the top.</p>
+      <p class="terminal enter" style="--d: 240ms" translate="no" aria-label="while not at the top, climb">
+        <span class="prompt" aria-hidden="true">&gt;</span> <span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span>
+      </p>
+      <div class="cta enter" style="--d: 280ms">
+        <a href="#work" class="btn btn-primary">See My Work</a>
+        <a href="#contact" class="btn btn-quiet">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- decorative ticker; the real list lives in the Tools section -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="tk"><svg viewBox="0 0 24 24" fill="#F7DF1E"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg>JavaScript</span>
+      <img class="wm wm-ts" src="assets/wordmarks/typescript.svg" alt="">
+      <img class="wm wm-py" src="assets/wordmarks/python-dark.svg" alt="">
+      <span class="tk"><svg viewBox="0 0 24 24" fill="#61DAFB"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/></svg>React</span>
+      <img class="wm wm-node" src="assets/wordmarks/nodejs.svg" alt="">
+      <span class="tk"><svg viewBox="0 0 24 24" fill="#FFFFFF"><path d="M.38 0a.268.268 0 0 0-.256.332l2.894 11.716a.268.268 0 0 0 .01.04l2.89 11.708a.268.268 0 0 0 .447.128L23.802 7.15a.268.268 0 0 0-.112-.45l-5.784-1.667a.268.268 0 0 0-.123-.035L6.38 1.715a.268.268 0 0 0-.144-.04L.456.01A.268.268 0 0 0 .38 0zm.374.654L5.71 2.08 1.99 5.664zM6.61 2.34l4.864 1.4-3.65 3.515zm-.522.12l1.217 4.926-4.877-1.4zm6.28 1.538l4.878 1.404-3.662 3.53zm-.52.13l1.208 4.9-4.853-1.392zm6.3 1.534l4.947 1.424-3.715 3.574zm-.524.12l1.215 4.926-4.876-1.398zm-15.432.696l4.964 1.424-3.726 3.586zM8.047 8.15l4.877 1.4-3.66 3.527zm-.518.137l1.236 5.017-4.963-1.432zm6.274 1.535l4.965 1.425-3.73 3.586zm-.52.127l1.235 5.012-4.958-1.43zm-9.63 2.438l4.873 1.406-3.656 3.523zm5.854 1.687l4.863 1.403-3.648 3.51zm-.54.04l1.214 4.927-4.875-1.4zm-3.896 4.02l5.037 1.442-3.782 3.638z"/></svg>three.js</span>
+      <img class="wm wm-blender" src="assets/wordmarks/blender-dark.svg" alt="">
+      <span class="tk"><img class="wm-icon" src="assets/wordmarks/postgresql.svg" alt="">PostgreSQL</span>
+      <span class="tk"><img class="wm-icon wm-tux" src="assets/wordmarks/tux.svg" alt="">Linux</span>
+      <img class="wm wm-git" src="assets/wordmarks/git.svg" alt="">
+      <span class="tk"><svg viewBox="0 0 24 24" fill="#F7DF1E"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg>JavaScript</span>
+      <img class="wm wm-ts" src="assets/wordmarks/typescript.svg" alt="">
+      <img class="wm wm-py" src="assets/wordmarks/python-dark.svg" alt="">
+      <span class="tk"><svg viewBox="0 0 24 24" fill="#61DAFB"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/></svg>React</span>
+      <img class="wm wm-node" src="assets/wordmarks/nodejs.svg" alt="">
+      <span class="tk"><svg viewBox="0 0 24 24" fill="#FFFFFF"><path d="M.38 0a.268.268 0 0 0-.256.332l2.894 11.716a.268.268 0 0 0 .01.04l2.89 11.708a.268.268 0 0 0 .447.128L23.802 7.15a.268.268 0 0 0-.112-.45l-5.784-1.667a.268.268 0 0 0-.123-.035L6.38 1.715a.268.268 0 0 0-.144-.04L.456.01A.268.268 0 0 0 .38 0zm.374.654L5.71 2.08 1.99 5.664zM6.61 2.34l4.864 1.4-3.65 3.515zm-.522.12l1.217 4.926-4.877-1.4zm6.28 1.538l4.878 1.404-3.662 3.53zm-.52.13l1.208 4.9-4.853-1.392zm6.3 1.534l4.947 1.424-3.715 3.574zm-.524.12l1.215 4.926-4.876-1.398zm-15.432.696l4.964 1.424-3.726 3.586zM8.047 8.15l4.877 1.4-3.66 3.527zm-.518.137l1.236 5.017-4.963-1.432zm6.274 1.535l4.965 1.425-3.73 3.586zm-.52.127l1.235 5.012-4.958-1.43zm-9.63 2.438l4.873 1.406-3.656 3.523zm5.854 1.687l4.863 1.403-3.648 3.51zm-.54.04l1.214 4.927-4.875-1.4zm-3.896 4.02l5.037 1.442-3.782 3.638z"/></svg>three.js</span>
+      <img class="wm wm-blender" src="assets/wordmarks/blender-dark.svg" alt="">
+      <span class="tk"><img class="wm-icon" src="assets/wordmarks/postgresql.svg" alt="">PostgreSQL</span>
+      <span class="tk"><img class="wm-icon wm-tux" src="assets/wordmarks/tux.svg" alt="">Linux</span>
+      <img class="wm wm-git" src="assets/wordmarks/git.svg" alt="">
+    </div>
+  </div>
+
+  <main id="main">
+    <section id="about" class="block" aria-labelledby="about-h">
+      <h2 id="about-h" data-decode>About</h2>
+      <div class="block-body prose">
+        <!-- EDIT: replace with your real story -->
+        <p class="statement reveal-mask">I build software the way I climb: plan the route, travel light, and keep moving when it gets steep.</p>
+        <p>I enjoy the problems other people walk away from — the slow query, the tangled codebase, the bug that only happens on Fridays. I like turning them into software that is fast, clear, and quietly reliable.</p>
+        <p>Away from the keyboard you’ll find me on a trail with a pack, a water bottle, and no signal.</p>
+      </div>
+    </section>
+
+    <section id="experience" class="block" aria-labelledby="exp-h">
+      <h2 id="exp-h" data-decode>Experience</h2>
+      <!-- EDIT: replace with your real roles and dates -->
+      <ol class="timeline block-body stagger" role="list">
+        <li>
+          <span class="when">2026 — Now</span>
+          <div>
+            <h3>Software Developer</h3>
+            <p class="where">Company Name</p>
+            <p>What you own, what you shipped, and the impact in one or two lines.</p>
+          </div>
+        </li>
+        <li>
+          <span class="when">2025</span>
+          <div>
+            <h3>Developer Intern</h3>
+            <p class="where">Company Name</p>
+            <p>What you worked on and what you learned that made you better.</p>
+          </div>
+        </li>
+        <li>
+          <span class="when">2022 — 2026</span>
+          <div>
+            <h3>BSc, Your Degree</h3>
+            <p class="where">BRAC University</p>
+            <p>Focus areas, a project you’re proud of, or an award.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="work" class="block" aria-labelledby="work-h">
+      <h2 id="work-h" data-decode>Selected Work</h2>
+      <!-- EDIT: replace with your real projects -->
+      <ul class="work block-body stagger" role="list">
+        <li>
+          <a class="work-row" href="#">
+            <span class="work-title">Project One</span>
+            <span class="work-desc">What you built, the problem it solved, and the result in one line.</span>
+            <span class="work-year">2026</span>
+          </a>
+        </li>
+        <li>
+          <a class="work-row" href="#">
+            <span class="work-title">Project Two</span>
+            <span class="work-desc">What you built, the problem it solved, and the result in one line.</span>
+            <span class="work-year">2025</span>
+          </a>
+        </li>
+        <li>
+          <a class="work-row" href="#top">
+            <span class="work-title">This Portfolio</span>
+            <span class="work-desc">Photo retouched and graded in Python, code glyphs modelled and animated in Blender, rendered live with Three.js.</span>
+            <span class="work-year">2026</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section id="tools" class="block" aria-labelledby="tools-h">
+      <h2 id="tools-h" data-decode>Tools</h2>
+      <!-- EDIT: change to your real skills -->
+      <dl class="tools block-body stagger">
+        <div><dt>Languages</dt><dd>JavaScript, TypeScript, Python, C++, SQL</dd></div>
+        <div><dt>Frontend</dt><dd>React, Three.js, HTML, CSS</dd></div>
+        <div><dt>Backend</dt><dd>Node.js, REST APIs, PostgreSQL</dd></div>
+        <div><dt>Craft</dt><dd>Git, Linux, Blender, UI design</dd></div>
+      </dl>
+    </section>
+
+    <!-- 3D motion piece: two hands built from live code characters (modelled in Blender) -->
+    <section class="connect" id="connect" aria-labelledby="connect-h">
+      <div class="connect-stage" id="hands" aria-hidden="true"></div>
+      <div class="connect-copy">
+        <h2 id="connect-h" class="connect-title">Human ideas. Written in code.</h2>
+        <p class="connect-sub">Every product starts with a person and a problem. I write the code that connects them.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="block contact" aria-labelledby="contact-h">
+      <h2 id="contact-h" data-decode>Contact</h2>
+      <div class="block-body">
+        <p class="statement reveal-mask">Have a hard problem? Let’s climb it together.</p>
+        <!-- EDIT: put your real email + links -->
+        <a class="mail" href="mailto:you@example.com" translate="no">you@example.com</a>
+        <ul class="socials" role="list">
+          <li><a href="https://github.com/" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© <span id="year">2026</span> Sakib</span>
+    <span>Built with Blender, Python and Three.js</span>
+    <a href="#top">Back to Top</a>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
